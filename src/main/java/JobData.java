@@ -5,10 +5,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -25,7 +22,7 @@ public class JobData {
      * without duplicates, for a given column.
      *
      * @param field The column to retrieve values from
-     * @return List of all of the values of the given field
+     * @return List of all the values of the given field
      */
     public static ArrayList<String> findAll(String field) {
 
@@ -73,9 +70,9 @@ public class JobData {
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
+            String aValue = row.get(column).toLowerCase();
 
-            if (aValue.contains(value)) {
+            if (aValue.contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
@@ -91,11 +88,26 @@ public class JobData {
      */
     public static ArrayList<HashMap<String, String>> findByValue(String value) {
 
-        // load data, if not already loaded
         loadData();
 
-        // TODO - implement this method
-        return null;
+        ArrayList<HashMap<String, String>> valueSearchedJobs = new ArrayList<>();
+
+        String searchTerm = value.toLowerCase();
+//        System.out.println(searchTerm);
+
+
+        for (HashMap<String, String> eachJob : allJobs) {
+            for ( String data : eachJob.values()) {
+
+//                System.out.println(data.toLowerCase());
+
+                if (data.toLowerCase().contains(searchTerm)) {
+                    valueSearchedJobs.add(eachJob);
+                }
+            }
+
+        }
+        return valueSearchedJobs;
     }
 
     /**
